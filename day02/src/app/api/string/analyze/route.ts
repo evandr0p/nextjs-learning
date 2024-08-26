@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchOpenAIResponse } from  '../../../../services/serviceOpenAi';  // Service using server-side logic
 import { PROMPT_ANALYZE } from '@/prompts';
+import { StringDetail } from '@/models/strings/StringDetail';
 
 
 export async function GET() {
@@ -13,7 +14,13 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
   
+    
     let { prompt } = await req.json();
+    
+    let stringDetail: StringDetail = {
+      Name: prompt
+    };
+
     prompt = PROMPT_ANALYZE.replace( "#", prompt);
 
     const protocol = req.headers.get('x-forwarded-proto') || 'http';  // or 'https'
@@ -23,11 +30,15 @@ export async function POST(req: NextRequest) {
   
     console.log(`Request body: ${JSON.stringify({ prompt })}`);
 
-    const res = await fetchOpenAIResponse(prompt);  // Securely call API
+    let result = await fetchOpenAIResponse(prompt.replace(/[\r\n\\']/g, ''));  // Securely call API
 
-    console.log(`OpenAI Response: ${res}`);
+    if (result) {
+      let apiResponse: any = JSON.parse(result);
+      Object.assign(stringDetail, apiResponse);
+    }
 
-    return NextResponse.json(res);
+    console.log(`OpenAI Response: ${JSON.stringify(stringDetail)}`);
+    return NextResponse.json(stringDetail);
 
   } catch (error) {
     console.error('Error fetching OpenAI response:', error);

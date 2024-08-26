@@ -4,7 +4,7 @@
 
 import React, { useState, useCallback } from 'react';
 
-import ServerStringAnalizeComponent from '@/components/stringAnalizeServer';
+import StringAnalizeComponentServer from '@/components/stringAnalizeServer';
 import ClientStringAnalizeComponent from '@/components/stringAnalizeClient';
 
 
@@ -12,6 +12,7 @@ const HomePage: React.FC = () => {
   const [prompt, setPrompt] = useState<string | null>(null);
 
   const handleFetchData = useCallback(async (newPrompt: string) => {
+    console.log('handleFetchData called with:', newPrompt);
     setPrompt(newPrompt);
   }, []);
 
@@ -19,7 +20,7 @@ const HomePage: React.FC = () => {
     <div>
       <h1>OpenAI Prompt Generator</h1>
       <ClientStringAnalizeComponent onFetchData={handleFetchData} />
-      {prompt && <ServerStringAnalizeComponent data={prompt} />}
+      {<StringAnalizeComponentServer data={prompt} />}
     </div>
   );
 };

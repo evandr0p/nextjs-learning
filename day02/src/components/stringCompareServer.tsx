@@ -1,11 +1,12 @@
 import React from 'react';
 
-interface ServerFormOpenAiComponentProps {
+interface StringCompareServerProps {
   data: any;
 }
 
 
-const ServerStringCompareComponent: React.FC<ServerFormOpenAiComponentProps> = ({ data }) => {
+const StringCompareServerComponent: React.FC<StringCompareServerProps> = ({ data }) => {
+  console.log('Received data:', data);
   if (!data) {
     return <p>No data to display.</p>;
   }
@@ -38,4 +39,4 @@ const ServerStringCompareComponent: React.FC<ServerFormOpenAiComponentProps> = (
   );
 };
 
-export default ServerStringCompareComponent;
+export default StringCompareServerComponent;
