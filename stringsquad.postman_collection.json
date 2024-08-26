@@ -1,0 +1,126 @@
+{
+	"info": {
+		"_postman_id": "129d0abc-fbac-4ffb-8632-441b60365505",
+		"name": "stringsquad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37484165"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "string",
+					"item": [
+						{
+							"name": "analyze",
+							"item": [
+								{
+									"name": "New Request",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/string/analyze",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"string",
+												"analyze"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {}
+									},
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"prompt\": \"Head Linx\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/api/string/analyze",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"string",
+												"analyze"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "compare",
+							"item": [
+								{
+									"name": "New Request",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/string/compare",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"string",
+												"compare"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/string/compare",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"string",
+												"compare"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
