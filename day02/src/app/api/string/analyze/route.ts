@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
       Name: prompt
     };
 
-    prompt = PROMPT_ANALYZE.replace( "#", prompt);
+    prompt = PROMPT_ANALYZE.replace( "#1", prompt);
 
     const protocol = req.headers.get('x-forwarded-proto') || 'http';  // or 'https'
     const host = req.headers.get('host');
