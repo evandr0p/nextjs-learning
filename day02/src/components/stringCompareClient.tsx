@@ -6,12 +6,12 @@ import React, { useState } from 'react';
 
 
 interface StringCompareClientProps {
-  onFetchData: (prompt: string) => void;
+  onFetchCompareData: (comparisonResult: string) => void;
 }
 
-const StringCompareClientComponent: React.FC<StringCompareClientProps> = ({ onFetchData }) => {
-  const [string, setString] = useState('');
-  const [compareTo, setCompareTo] = useState('');
+const StringCompareClientComponent: React.FC<StringCompareClientProps> = ({ onFetchCompareData }) => {
+  const [stringReference, setStringReference] = useState('');
+  const [stringToCompare, setStringToCompare] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -24,10 +24,13 @@ const StringCompareClientComponent: React.FC<StringCompareClientProps> = ({ onFe
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: string }),
+        body: JSON.stringify({
+          referenceString: stringReference,
+          stringToCompare: stringToCompare
+        }),
       });
       const data = await response.json();
-      onFetchData(data.response);
+      onFetchCompareData(data);
     } catch (error) {
       console.error('Error fetching the comparison:', error);
     } finally {
@@ -41,8 +44,8 @@ const StringCompareClientComponent: React.FC<StringCompareClientProps> = ({ onFe
         <p>Type the string Name:
           <input
             name="string"
-            value={string}
-            onChange={(e) => setString(e.target.value)}
+            value={stringReference}
+            onChange={(e) => setStringReference(e.target.value)}
             placeholder="Inform the string Name"
             required={true}
           />
@@ -50,8 +53,8 @@ const StringCompareClientComponent: React.FC<StringCompareClientProps> = ({ onFe
         <p>Type the string Name to compare with:
           <input
             name="compareTo"
-            value={string}
-            onChange={(e) => setString(e.target.value)}
+            value={stringToCompare}
+            onChange={(e) => setStringToCompare(e.target.value)}
             placeholder="Inform the string Name"
             required={true}
           />

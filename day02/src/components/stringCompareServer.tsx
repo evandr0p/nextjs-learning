@@ -1,4 +1,7 @@
 import React from 'react';
+import StringDetailComponent from './stringDetailComponent';
+import { StringDetail } from '@/models/strings/StringDetail';
+
 
 interface StringCompareServerProps {
   data: any;
@@ -6,7 +9,7 @@ interface StringCompareServerProps {
 
 
 const StringCompareServerComponent: React.FC<StringCompareServerProps> = ({ data }) => {
-  console.log('Received data:', data);
+  console.log('StringCompareServerComponent Received data :', data);
   if (!data) {
     return <p>No data to display.</p>;
   }
@@ -14,27 +17,13 @@ const StringCompareServerComponent: React.FC<StringCompareServerProps> = ({ data
   return (
     <div>
       <h2>Results</h2>
-      
-      {typeof data === 'object' ? (
-        <table>
-          <thead>
-            <tr>
-              {Object.keys(data).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {Object.values(data).map((value, index) => (
-                <td key={index}>{String(value)}</td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      ) : (
-        <p>{data}</p>
-      )}
+      {Object.entries(data).map(([key, value], index) => (
+          <div key={index}>
+            <h2>{key}</h2>
+            <StringDetailComponent  data={value as StringDetail}  />
+          </div>
+        ))
+      }
     </div>
   );
 };
