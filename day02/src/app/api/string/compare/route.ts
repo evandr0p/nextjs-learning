@@ -2,7 +2,9 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchOpenAIResponse } from  '../../../../services/serviceOpenAi';  // Service using server-side logic
-import { PROMPT_ANALYZE } from '@/prompts';
+import { PROMPT_COMPARE } from '@/prompts';
+import { StringDetail } from '@/models/strings/StringDetail';
+
 
 
 export async function GET() {
@@ -12,23 +14,44 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-  
-    let { prompt } = await req.json();
-    prompt = PROMPT_ANALYZE.replace( "#", prompt);
-
     const protocol = req.headers.get('x-forwarded-proto') || 'http';  // or 'https'
     const host = req.headers.get('host');
     const fullUrl = `${protocol}://${host}${req.url}`;
     console.log(`Full Request URL: ${fullUrl}`);
   
-    console.log(`Request body: ${JSON.stringify({ prompt })}`);
+    let requestData:any =  await req.json();
+    if (!requestData) {
+      return new Response(`No request data`, {
+        status: 400,
+      })
+    }
+    
+    let { referenceString, stringToCompare } = requestData;
+    if (!referenceString || !stringToCompare) {
+      return new Response(`Invalid request Body missing referenceString or stringToCompareq`, {
+        status: 400,
+      })
+    }
+    
+    console.log(`Comparison: ${referenceString} vs ${stringToCompare}`);
+    
+    let prompt = PROMPT_COMPARE.replace( "#1", referenceString).replace("#2", stringToCompare);
+    console.log(`Prompt for Request: ${JSON.stringify({ prompt })}`);
+  
 
-    const res = await fetchOpenAIResponse(prompt);  // Securely call API
+    const result = await fetchOpenAIResponse(prompt.replace(/[\r\n\\']/g, ''));  // Securely call API
+    console.log(`OpenAI Response: ${result}`);
 
-    console.log(`OpenAI Response: ${res}`);
+    if (!result) {
+      return new Response(`Error fetching OpenAI response: ${result}`, {
+        status: 400,
+      })
+    } else
+      {
+      let apiResponse: StringDetail[] = JSON.parse(result);
 
-    return NextResponse.json(res);
-
+      return NextResponse.json(apiResponse);
+    }
   } catch (error) {
     console.error('Error fetching OpenAI response:', error);
     return new Response(`Error fetching OpenAI response: ${error}`, {
